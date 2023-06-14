@@ -1,0 +1,34 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:latest
+    container_name: my-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=bjit1234
+    restart: always
+    volumes:
+      - ./db_data:/var/lib/mysql
+    networks:
+      - tan-network
+
+  apache:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my-apache
+    ports:
+      - 8000:80
+    restart: always
+    volumes:
+      - ./web:/var/www/html
+    networks:
+      - tan-network
+    depends_on:
+      - mysql
+
+networks:
+  tan-network:
+
+volumes:
+  web:
+  db_data:
